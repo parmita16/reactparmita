@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  background: #b6caff;
+  font-family: Arial;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.form {
+  background: white;
+  padding: 30px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+}
+h2 {
+  text-align: center;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+button {
+  width: 100%;
+  padding: 10px;
+  background: royalblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
