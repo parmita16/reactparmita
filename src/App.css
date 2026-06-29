@@ -1,35 +1,24 @@
 body {
-  margin: 0;
-  background: #b6caff;
-  font-family: Arial;
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
 }
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-.form {
-  background: white;
-  padding: 30px;
   width: 300px;
+  margin: 50px auto;
+  text-align: center;
+  background: white;
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px gray;
+}
+h1 {
+  color: darkblue;
 }
 h2 {
-  text-align: center;
-}
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  color: crimson;
 }
 button {
-  width: 100%;
+  margin: 5px;
   padding: 10px;
-  background: royalblue;
-  color: white;
-  border: none;
   cursor: pointer;
 }
 

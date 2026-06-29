@@ -1,48 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 function App() {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
-  const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (user.name === "" || user.email === "") {
-      alert("Please fill all fields.");
-      return;
-    }
-    alert("Form Submitted!");
-    setUser({
-      name: "",
-      email: "",
-    });
-  };
+  const [anime, setAnime] = useState("Naruto");
+  useEffect(() => {
+    console.log("Welcome Anime Fan!");
+  }, []);
+  useEffect(() => {
+    document.title = anime;
+    console.log("Anime Changed!");
+  }, [anime]);
   return (
     <div className="container">
-      <form onSubmit={handleSubmit} className="form">
-        <h2>Student Registration</h2>
-        <input
-          type="text"
-          name="name"
-          placeholder="Enter Name"
-          value={user.name}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={user.email}
-          onChange={handleChange}
-        />
-        <button>Register</button>
-      </form>
+      <h1>🎌 Favorite Anime</h1>
+      <h2>{anime}</h2>
+      <button onClick={() => setAnime("Naruto")}>
+        Naruto
+      </button>
+      <button onClick={() => setAnime("One Piece")}>
+        One Piece
+      </button>
+      <button onClick={() => setAnime("Demon Slayer")}>
+        Demon Slayer
+      </button>
     </div>
   );
 }
