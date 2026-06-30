@@ -1,46 +1,56 @@
 import { useState, useEffect } from "react";
 function App() {
-  const [users, setUsers] = useState([]);
+  const [coffee, setCoffee] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  function getUsers() {
+  function getCoffee() {
     setLoading(true);
     setError("");
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch("https://api.sampleapis.com/coffee/hot")
       .then((response) => response.json())
       .then((data) => {
-        setUsers(data);
+        setCoffee(data);
       })
       .catch(() => {
-        setError("Something went wrong!");
+        setError("Couldn't load coffee ☕");
       })
       .finally(() => {
         setLoading(false);
       });
   }
   useEffect(() => {
-    getUsers();
+    getCoffee();
   }, []);
   if (loading) {
-    return <h1 className="text-2xl font-bold">Loading...</h1>;
+    return <h1 className="text-2xl p-5">☕ Brewing coffee...</h1>;
   }
   if (error) {
-    return <h1 className="text-red-500">{error}</h1>;
+    return <h1 className="text-red-500 p-5">{error}</h1>;
   }
   return (
-    <div className="p-5">
-      <h1 className="text-3xl font-bold mb-4">Users</h1>
+    <div className="bg-amber-100 min-h-screen p-6">
+      <h1 className="text-4xl font-bold text-center text-amber-900 mb-6">
+        ☕ Coffee Menu
+      </h1>
       <button
-        onClick={getUsers}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        onClick={getCoffee}
+        className="bg-amber-700 text-white px-4 py-2 rounded mb-6"
       >
-        Refresh
+        Refresh Menu
       </button>
-      <div className="mt-4">
-        {users.map((user) => (
-          <p key={user.id} className="mb-2">
-            {user.name}
-          </p>
+      <div className="space-y-4">
+        {coffee.slice(0, 6).map((item) => (
+          <div
+            key={item.id}
+            className="bg-white p-4 rounded shadow"
+          >
+            <h2 className="text-xl font-semibold">
+              {item.title}
+            </h2>
+            <p className="text-gray-600">
+              {item.description}
+            </p>
+          </div>
         ))}
       </div>
     </div>
