@@ -1,53 +1,49 @@
-import { useEffect, useState } from "react";
-function App() {
-  const [coffee, setCoffee] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  function getCoffee() {
+import { useState } from "react";
+
+function NarutoSearch() {
+  const [name, setName] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  function searchCharacter() {
     setLoading(true);
-    setError("");
-    fetch("https://api.sampleapis.com/coffee/hot")
-      .then((response) => response.json())
+
+    fetch(`https://dattebayo-api.onrender.com/characters?name=${name}`)
+      .then((res) => res.json())
       .then((data) => {
-        setCoffee(data);
+        setResults(data.characters || []);
+        setLoading(false);
       })
       .catch(() => {
-        setError("Failed to load coffee.");
-      })
-      .finally(() => {
         setLoading(false);
       });
   }
-  useEffect(() => {
-    getCoffee();
-  }, []);
-  if (loading) {
-    return <h1 className="text-2xl p-5">☕ Brewing coffee...</h1>;
-  }
-  if (error) {
-    return <h1 className="text-red-500 p-5">{error}</h1>;
-  }
+
   return (
-    <div className="p-5">
-      <h1 className="text-3xl font-bold mb-5">
-        ☕Today's Coffee
-      </h1>
-      <button
-        onClick={getCoffee}
-        className="bg-purple-700 text-white px-4 py-2 rounded mb-5"
-      >
-        Refresh
-      </button>
-      {coffee.slice(0,8).map((item) => (
-        <div
-          key={item.id}
-          className="border rounded p-3 mb-3"
-        >
-          <h2 className="font-bold">{item.title}</h2>
-          <p>{item.description}</p>
+    <div>
+      <input
+        type="text"
+        placeholder="Type Naruto"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <button onClick={searchCharacter}>Search</button>
+
+      {loading && <p>Loading...</p>}
+
+      {results.map((character) => (
+        <div key={character.id}>
+          <h3>{character.name}</h3>
+          <img
+            src={character.images[0]}
+            alt={character.name}
+            width="100"
+          />
         </div>
       ))}
     </div>
   );
 }
-export default App;
+
+export default NarutoSearch;
