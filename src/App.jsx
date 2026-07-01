@@ -1,52 +1,32 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
+import "./App.css";
+import useQuote from "./useQuote";
 function App() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  function getWeather() {
-    setLoading(true);
-    setError("");
-    fetch(
-      "https://api.open-meteo.com/v1/forecast?latitude=27.7172&longitude=85.3240&current_weather=true"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setWeather(data.current_weather);
-      })
-      .catch(() => {
-        setError("Failed to load weather.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const inputRef = useRef();
+  const { quote, saveQuote } = useQuote();
+  function handleSave() {
+    saveQuote(inputRef.current.value);
   }
-  useEffect(() => {
-    getWeather();
-  }, []);
-  if (loading) {
-    return <h1 className="text-2xl p-5">Loading...</h1>;
+  function handleFocus() {
+    inputRef.current.focus();
   }
-  if (error) {
-    return <h1 className="text-red-500 p-5">{error}</h1>;
+  function handleClear() {
+    inputRef.current.value = "";
+    inputRef.current.focus();
   }
   return (
-    <div className="p-5">
-      <h1 className="text-3xl font-bold mb-5">
-        🌤 Kathmandu Weather
-      </h1>
-      <button
-        onClick={getWeather}
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-5"
-      >
-        Refresh
-      </button>
-      <div className="border rounded p-4">
-        <h2 className="text-xl font-bold">
-          Temperature: {weather.temperature}°C
-        </h2>
-        <p>Wind Speed: {weather.windspeed} km/h</p>
+    <div className="container">
+      <h1>Daily Motivation</h1>
+      <input
+        ref={inputRef}
+        placeholder="Write today's motivation..."   />
+      <div className="buttons">
+        <button onClick={handleSave}>Save</button>
+        <button onClick={handleFocus}>Focus</button>
+        <button onClick={handleClear}>Clear</button>
       </div>
-    </div>
-  );
+      <h2>Saved Quote</h2>
+      <p>{quote || "No quote saved yet."}</p>
+    </div>    );
 }
 export default App;
