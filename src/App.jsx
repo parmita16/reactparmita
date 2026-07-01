@@ -1,49 +1,52 @@
-import { useState } from "react";
-
-function NarutoSearch() {
-  const [name, setName] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  function searchCharacter() {
+import { useEffect, useState } from "react";
+function App() {
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  function getWeather() {
     setLoading(true);
-
-    fetch(`https://dattebayo-api.onrender.com/characters?name=${name}`)
-      .then((res) => res.json())
+    setError("");
+    fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=27.7172&longitude=85.3240&current_weather=true"
+    )
+      .then((response) => response.json())
       .then((data) => {
-        setResults(data.characters || []);
-        setLoading(false);
+        setWeather(data.current_weather);
       })
       .catch(() => {
+        setError("Failed to load weather.");
+      })
+      .finally(() => {
         setLoading(false);
       });
   }
-
+  useEffect(() => {
+    getWeather();
+  }, []);
+  if (loading) {
+    return <h1 className="text-2xl p-5">Loading...</h1>;
+  }
+  if (error) {
+    return <h1 className="text-red-500 p-5">{error}</h1>;
+  }
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Type Naruto"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <button onClick={searchCharacter}>Search</button>
-
-      {loading && <p>Loading...</p>}
-
-      {results.map((character) => (
-        <div key={character.id}>
-          <h3>{character.name}</h3>
-          <img
-            src={character.images[0]}
-            alt={character.name}
-            width="100"
-          />
-        </div>
-      ))}
+    <div className="p-5">
+      <h1 className="text-3xl font-bold mb-5">
+        🌤 Kathmandu Weather
+      </h1>
+      <button
+        onClick={getWeather}
+        className="bg-blue-500 text-white px-4 py-2 rounded mb-5"
+      >
+        Refresh
+      </button>
+      <div className="border rounded p-4">
+        <h2 className="text-xl font-bold">
+          Temperature: {weather.temperature}°C
+        </h2>
+        <p>Wind Speed: {weather.windspeed} km/h</p>
+      </div>
     </div>
   );
 }
-
-export default NarutoSearch;
+export default App;
