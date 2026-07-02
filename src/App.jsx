@@ -1,32 +1,43 @@
-import { useRef } from "react";
+import { useState } from "react";
 import "./App.css";
-import useQuote from "./useQuote";
 function App() {
-  const inputRef = useRef();
-  const { quote, saveQuote } = useQuote();
-  function handleSave() {
-    saveQuote(inputRef.current.value);
-  }
-  function handleFocus() {
-    inputRef.current.focus();
-  }
-  function handleClear() {
-    inputRef.current.value = "";
-    inputRef.current.focus();
-  }
+  const moods = [
+    { emoji: "😊", name: "Happy", color: "#FFD54F" },
+    { emoji: "😢", name: "Sad", color: "#64B5F6" },
+    { emoji: "😴", name: "Sleepy", color: "#B39DDB" },
+    { emoji: "🔥", name: "Motivated", color: "#FF8A65" },
+    { emoji: "😎", name: "Cool", color: "#81C784" },
+  ];
+  const [selectedMood, setSelectedMood] = useState(null);
   return (
-    <div className="container">
-      <h1>Daily Motivation</h1>
-      <input
-        ref={inputRef}
-        placeholder="Write today's motivation..."   />
+    <div
+      className="container"
+      style={{
+        backgroundColor: selectedMood ? selectedMood.color : "#f5f5f5",
+      }}
+    >
+      <h1>🎨 Mood Picker</h1>
+      <p>How are you feeling today?</p>
       <div className="buttons">
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleFocus}>Focus</button>
-        <button onClick={handleClear}>Clear</button>
+        {moods.map((mood) => (
+          <button
+            key={mood.name}
+            onClick={() => setSelectedMood(mood)}
+          >
+            {mood.emoji} {mood.name}
+          </button>
+        ))}
       </div>
-      <h2>Saved Quote</h2>
-      <p>{quote || "No quote saved yet."}</p>
-    </div>    );
+      {selectedMood && (
+        <div className="card">
+          <h2>{selectedMood.emoji}</h2>
+          <h3>{selectedMood.name}</h3>
+          <p>
+            Your mood today is <strong>{selectedMood.name}</strong>.
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 export default App;
