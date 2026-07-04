@@ -1,17 +1,16 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 function Character() {
+
   const { id } = useParams();
-  const navigate = useNavigate();
+
   return (
     <>
-      <h1>{id}</h1>
-      <button onClick={() => navigate("/")}>
-        Go Home
-      </button>
-      <button onClick={() => navigate(-1)}>
-        Go Back
-      </button>
+      <h1>Character Page</h1>
+
+      <h2>ID: {id}</h2>
     </>
   );
 }
+
 export default Character;
